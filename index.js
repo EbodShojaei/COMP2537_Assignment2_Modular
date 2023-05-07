@@ -31,11 +31,6 @@ app.use(express.static(__dirname + '/public'));
 // The express.urlencoded middleware is used to parse incoming request bodies.
 app.use(express.urlencoded({ extended: true }));
 
-/////////////////////////////////
-////// END CONFIG SECTION ///////
-/////////////////////////////////
-
-
 // Setup session support to enable storing session data.
 app.use(session({
     secret: node_session_secret,
@@ -45,13 +40,14 @@ app.use(session({
 }
 ));
 
+/////////////////////////////////
+////// END CONFIG SECTION ///////
+/////////////////////////////////
 
-////////////////////////////////
-///// START ROUTES SECTION /////
-////////////////////////////////
 
-// Declare modular route paths.
-const { adminRoute, homeRoute, membersRoute, loginRoute, loginSubmitRoute, logoutRoute, signupRoute, signupSubmitRoute, error404Route } = require('./config/routes');
+/////////////////////////////////
+////// MIDDLEWARE SECTION ///////
+/////////////////////////////////
 
 // Navlinks and currentURL are used to determine which navlinks to display in the header.
 app.use('/', (req, res, next) => {
@@ -79,16 +75,18 @@ app.use('/', (req, res, next) => {
     next();
 });
 
-// Route declarations below.
-app.use('/', homeRoute);
-app.use('/signup', signupRoute);
-app.use('/signupSubmit', signupSubmitRoute);
-app.use('/login', loginRoute);
-app.use('/loginSubmit', loginSubmitRoute);
-app.use('/logout', logoutRoute);
-app.use('/members', membersRoute);
-app.use('/admin', adminRoute);
-app.use('*', error404Route);
+// Modular route paths declared below.
+// @credit PedroTech 'Separating Routes into Different Files'
+// @see https://www.youtube.com/watch?v=0Hu27PoloYw
+app.use('/', require('./routes/home'));
+app.use('/signup', require('./routes/signup'));
+app.use('/signupSubmit', require('./routes/signupSubmit'));
+app.use('/login', require('./routes/login'));
+app.use('/loginSubmit', require('./routes/loginSubmit'));
+app.use('/logout', require('./routes/logout'));
+app.use('/members', require('./routes/members'));
+app.use('/admin', require('./routes/admin'));
+app.use('*', require('./routes/error404'));
 
 // Once connectDB is resolved by connecting to the MongoDB databases, start the server.
 connectDB.then(() => {
