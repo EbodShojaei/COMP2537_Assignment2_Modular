@@ -3,7 +3,7 @@ const { bcrypt, Joi, router } = require('../config/dependencies');
 
 // @author greencodecomments
 // @see https://github.com/greencodecomments/COMP2537_Demo_Code_1/blob/main/index.js
-router.post('/loginSubmit', async (req, res) => {
+router.post('/login/submit', async (req, res) => {
     const { userCollection } = await require('../config/databaseConnection');
     var email = req.body.email.toLowerCase();
     var password = req.body.password;

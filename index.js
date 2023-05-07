@@ -80,14 +80,14 @@ app.use('/', (req, res, next) => {
 // @see https://www.youtube.com/watch?v=0Hu27PoloYw
 app.use('/', require('./routes/home'));
 app.use('/signup', require('./routes/signup'));
-app.use('/signupSubmit', require('./routes/signupSubmit'));
+app.use('/signup/submit', require('./routes/signupSubmit')); // post
 app.use('/login', require('./routes/login'));
-app.use('/loginSubmit', require('./routes/loginSubmit'));
+app.use('/login/submit', require('./routes/loginSubmit')); // post
 app.use('/logout', require('./routes/logout'));
 app.use('/members', require('./routes/members'));
 app.use('/admin', require('./routes/admin'));
-app.use('/admin/promote', require('./routes/adminPromote'));
-app.use('/admin/demote', require('./routes/adminDemote'));
+app.use('/admin/promote', require('./routes/adminPromote')); // post
+app.use('/admin/demote', require('./routes/adminDemote')); // post
 app.use('*', require('./routes/error404'));
 
 // Once connectDB is resolved by connecting to the MongoDB databases, start the server.
