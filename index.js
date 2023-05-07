@@ -86,6 +86,8 @@ app.use('/loginSubmit', require('./routes/loginSubmit'));
 app.use('/logout', require('./routes/logout'));
 app.use('/members', require('./routes/members'));
 app.use('/admin', require('./routes/admin'));
+app.use('/admin/promote', require('./routes/adminPromote'));
+app.use('/admin/demote', require('./routes/adminDemote'));
 app.use('*', require('./routes/error404'));
 
 // Once connectDB is resolved by connecting to the MongoDB databases, start the server.
