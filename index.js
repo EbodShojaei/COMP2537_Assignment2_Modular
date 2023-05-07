@@ -68,7 +68,11 @@ app.use('/', (req, res, next) => {
                 { route: "Members", link: "/members" },
                 { route: "Logout", link: "/logout" }
             ]
-            : [{ route: "Home", link: "/" }]; // No user here, go home.
+            : [
+                { route: "Home", link: "/" },
+                { route: "Login", link: "/login" },
+                { route: "Sign Up", link: "/signup" }
+            ]; // No user here, go home.
 
     app.locals.navLinks = navLinks;
     app.locals.currentURL = url.parse(req.url).pathname;
