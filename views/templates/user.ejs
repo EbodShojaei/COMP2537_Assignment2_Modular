@@ -1,0 +1,12 @@
+<li class="list-group-item">
+    <%= users.name %> (<%= users.user_type %>)
+            <form action='/admin/promote' method='post'>
+                <input type='hidden' name='name' value='<%= users.name %>'>
+                <button type="submit" class="p-2 m-2 col-sm-4 btn btn-success">Promote to Admin</button>
+            </form>
+
+            <form action='/admin/demote' method='post'>
+                <input type='hidden' name='name' value='<%= users.name %>'>
+                <button type="submit" class="p-2 m-2 col-sm-4 btn btn-danger">Demote to User</button>
+            </form>
+</li>

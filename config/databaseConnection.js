@@ -37,16 +37,16 @@ const sessionStore = new MongoDBSession({
 //
 // @credit Debugged by ChatGPT-4 (NOTE: Cyclic specifies that connections to MongoDB databases must be established
 //         before listening for server requests) .
-let userCollection;
-let sessionCollection;
 
 const connectDB = Promise.all([
     new Promise(resolve => mongodbStore.on('connected', resolve)),
     new Promise(resolve => sessionStore.on('connected', resolve))
 ]).then(() => {
     console.log('MongoDB user store and session store connected');
-    userCollection = mongodbStore.client.db().collection('users');
-    sessionCollection = sessionStore.client.db().collection('sessions');
+    module.exports.userCollection = mongodbStore.client.db().collection('users');
+    module.exports.sessionCollection = sessionStore.client.db().collection('sessions');
 });
 
-module.exports = { mongodbStore, sessionStore, userCollection, sessionCollection, connectDB };
+module.exports.mongodbStore = mongodbStore;
+module.exports.sessionStore = sessionStore;
+module.exports.connectDB = connectDB;

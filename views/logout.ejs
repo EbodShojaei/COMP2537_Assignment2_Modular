@@ -1,0 +1,17 @@
+<%- include("templates/header") %>
+    <div class="container px-5 mt-5">
+        <br>
+        <h3>
+            Logged out successfully.
+            <small class="text-muted">
+                Redirecting to homepage...
+            </small>
+        </h3>
+    </div>
+
+    <script>
+        setTimeout(() => {
+            window.location.href = '/';
+        }, 3000);
+    </script>
+<%- include("templates/footer") %>

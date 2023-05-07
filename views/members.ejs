@@ -1,0 +1,15 @@
+<%- include("templates/header") %>
+    <div class="container-fluid px-5 mt-5">
+        <h1>Hello, <%= name %>!</h1>
+        <div class="row mx-auto mt-5">
+            <% for(let i=1; i<=3; i++) { %>
+                <div class="col-md-4 p-2 text-center">
+                    <img src="/img/1-image<%= i %>.jpg" class="img-fluid" alt="Image <%= i %>">
+                </div>
+                <% } %>
+        </div>
+        <br>
+        <button class="p-2 m-2 col-sm-2 btn btn-primary" onclick="location.href = window.location.origin">Home</button>
+        <button class="p-2 m-2 col-sm-2 btn btn-danger" onclick="location.href = window.location.origin + '/logout'">Logout</button>
+    </div>
+<%- include("templates/footer") %>

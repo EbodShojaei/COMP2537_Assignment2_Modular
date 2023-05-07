@@ -1,0 +1,48 @@
+<%- include("templates/header") %>
+    <div class="container px-5">
+        <div class="row justify-content-center">
+            <div class="col-md-12 col-lg-10">
+                <div class="wrap d-md-flex pt-5">
+                    <div class="col-md-4">
+                        <img src="/img/2-login_image.jpg" class="img-fluid" alt="Login image">
+                    </div>
+                    <div class="login-wrap p-4 p-md-5">
+                        <div class="d-flex">
+                            <div class="w-100">
+                                <h3 class="mb-4">Sign In</h3>
+                            </div>
+                        </div>
+                        <form class="signin-form" action='/loginSubmit' method='post'>
+                            <div class="form-group mb-3">
+                                <label class="label" for="name">Username</label>
+                                <input class="form-control" autocomplete="off" name='email' type='email'
+                                    placeholder='email'>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="label" for="password">Password</label>
+                                <input class="form-control" autocomplete="off" name='password' type='password'
+                                    placeholder='password'>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="form-control btn btn-primary rounded submit px-3">Sign
+                                    In</button>
+                            </div>
+                            <div class="form-group d-md-flex">
+                                <div class="w-50 text-left">
+                                    <label class="checkbox-wrap checkbox-primary mb-0">Remember Me
+                                        <input type="checkbox" checked="">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="w-50 text-md-right">
+                                    <a href="/login">Forgot Password</a>
+                                </div>
+                            </div>
+                        </form>
+                        <p class="text-center">Not a member? <a href="/signup">Sign Up</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<%- include("templates/footer") %>

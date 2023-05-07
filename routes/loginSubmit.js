@@ -3,7 +3,8 @@ const { bcrypt, Joi, router } = require('../config/dependencies');
 
 // @author greencodecomments
 // @see https://github.com/greencodecomments/COMP2537_Demo_Code_1/blob/main/index.js
-router.post('/', async (req, res) => {
+router.post('/loginSubmit', async (req, res) => {
+    const { userCollection } = await require('../config/databaseConnection');
     var email = req.body.email.toLowerCase();
     var password = req.body.password;
 
@@ -22,90 +23,75 @@ router.post('/', async (req, res) => {
         // Loop through the validation errors and check the context property
         validationResult.error.details.forEach((error) => {
 
+            let errorMessage;
+
             switch (error.context.key) {
                 case "email":
                     if (email.trim() == "") {
-                        var html = `
-                        <p>Email required.</p>
-                        <a href="/login">Try again</a>
-                        `;
+                        errorMessage = "Email required.";
                     } else {
-                        var html = `
-                        <p>Email must be 20 characters or less and not contain any illegal characters.</p>
-                        <a href="/login">Try again</a>
-                        `;
+                        errorMessage = "Email must be 20 characters or less and not contain any illegal characters.";
                     }
                     break;
                 case "password":
                     if (password.trim() == "") {
-                        var html = `
-                        <p>Password required.</p>
-                        <a href="/login">Try again</a>
-                        `;
+                        errorMessage = "Password required.";
                     } else {
-                        var html = `
-                        <p>Password must be 20 characters or less and not contain any illegal characters.</p>
-                        <a href="/login">Try again</a>
-                        `;
+                        errorMessage = "Password must be 20 characters or less and not contain any illegal characters.";
                     }
                     break;
                 default:
                     // Error 400 for bad request if the validation error is other than 'name', 'email', and 'password'.
-                    var html = "Error 400: Invalid request!"
                     res.status(400);
+                    const statusCode = '400';
+                    errorMessage = 'Bad request.';
+
+                    res.render("error", { errorMessage: errorMessage, statusCode: statusCode });
+                    return;
             }
 
-            res.send(html);
+            const authentication = false;
+            res.render("loginSubmit", { errorMessage: errorMessage, authentication: authentication });
+            return;
         })
-
-        return;
     } else {
         // Search the collection for a matching user.
-        const result = await userCollection.find({ email: { $eq: email } }).project({ name: 1, email: 1, password: 1, _id: 1 }).toArray();
+        const result = await userCollection.find({ email: { $eq: email } }).project({ name: 1, password: 1, user_type: 1, _id: 1 }).toArray();
 
         // Check the collection for a matching user. If none, redirect.
         console.log(result);
 
         if (result.length != 1) {
             console.log("user not found");
-            var html = `
-            <p>User not found.</p>
-            <a href="/login">Try again</a>
-            `;
+            const errorMessage = "User not found.";
+            const authentication = false;
 
-            res.send(html);
+            res.render("loginSubmit", { errorMessage: errorMessage, authentication: authentication });
             return;
         }
 
         if (await bcrypt.compare(password, result[0].password)) {
             console.log("correct password");
 
+            const expireTime = 60 * 60 * 1000; //expires after 1 hour (minutes * seconds * millis)
+
             req.session.authenticated = true;
             req.session.name = result[0].name;
+            req.session.user_type = result[0].user_type;
             req.session.cookie.maxAge = expireTime;
 
-            var html = `
-            <!DOCTYPE html>
-            <html>
-              <head>
-                <meta http-equiv="refresh" content="3;url=/members">
-              </head>
-              <body>
-                <p>Logged in successfully. Redirecting to members page...</p>
-              </body>
-            </html>
-          `;
+            const successMessage = "Logged in successfully.";
+            const redirectMessage = "Redirecting to members page...";
+            const authentication = true;
 
-            res.send(html);
+            res.render("loginSubmit", { successMessage: successMessage, redirectMessage: redirectMessage, authentication: authentication });
             return;
         } else {
             console.log("incorrect password");
-            var html = `
-            <p>Invalid email/password combination.</p>
-            <a href="/login">Try again</a>
-            `;
+            const errorMessage = "Incorrect password.";
+            const authentication = false;
 
-            res.send(html);
+            res.render("loginSubmit", { errorMessage: errorMessage, authentication: authentication });
             return;
         }
     }

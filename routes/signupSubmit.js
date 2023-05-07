@@ -3,12 +3,13 @@ const { bcrypt, saltRounds, Joi, router } = require('../config/dependencies');
 
 // @credit greencodecomments
 // @see https://github.com/greencodecomments/COMP2537_Demo_Code_1/blob/main/index.js
-router.post('/', async (req, res) => {
-    var name = req.body.name;
+router.post('/signupSubmit', async (req, res) => {
+    const { userCollection } = await require('../config/databaseConnection');
+    const name = req.body.name;
 
     // Store the email in lowercase to avoid duplicate emails capitalized differently.
-    var email = req.body.email.toLowerCase();
-    var password = req.body.password;
+    const email = req.body.email.toLowerCase();
+    const password = req.body.password;
 
     const schema = Joi.object(
         {
@@ -26,53 +27,42 @@ router.post('/', async (req, res) => {
         // Loop through the validation errors and check the context property
         validationResult.error.details.forEach((error) => {
 
+            let errorMessage;
+
             switch (error.context.key) {
                 case "name":
                     if (name.trim() == "") {
-                        var html = `
-                        <p>Name required.</p>
-                        <a href="/signup">Try again</a>
-                        `;
+                        errorMessage = "Name required.";
                     } else {
-                        var html = `
-                        <p>Invalid name.</p>
-                        <a href="/signup">Try again</a>
-                        `;
+                        errorMessage = "Name must be 20 characters or less and not contain any illegal characters.";
                     }
                     break;
                 case "email":
                     if (email.trim() == "") {
-                        var html = `
-                        <p>Email required.</p>
-                        <a href="/signup">Try again</a>
-                        `;
+                        errorMessage = "Email required.";
                     } else {
-                        var html = `
-                        <p>Email must be 20 characters or less and not contain any illegal characters.</p>
-                        <a href="/signup">Try again</a>
-                        `;
+                        errorMessage = "Email must be 20 characters or less and not contain any illegal characters.";
                     }
                     break;
                 case "password":
                     if (password.trim() == "") {
-                        var html = `
-                        <p>Password required.</p>
-                        <a href="/signup">Try again</a>
-                        `;
+                        errorMessage = "Password required.";
                     } else {
-                        var html = `
-                        <p>Password must be 20 characters or less and not contain any illegal characters.</p>
-                        <a href="/signup">Try again</a>
-                        `;
+                        errorMessage = "Password must be 20 characters or less and not contain any illegal characters.";
                     }
                     break;
                 default:
                     // Error 400 for bad request if the validation error is other than 'name', 'email', and 'password'.
-                    var html = "Error 400: Invalid request!"
                     res.status(400);
+                    const statusCode = '400';
+                    errorMessage = 'Bad request.';
+
+                    res.render("error", { errorMessage: errorMessage, statusCode: statusCode });
+                    return;
             }
 
-            res.send(html);
+            const authentication = false;
+            res.render("signupSubmit", { errorMessage: errorMessage, authentication: authentication });
         })
 
         return;
@@ -91,41 +81,26 @@ router.post('/', async (req, res) => {
 
     const emailResult = await userCollection.find({ email: { $eq: email } }).project({ name: 1, email: 1, password: 1, _id: 1 }).toArray();
 
+
     if (nameResult.length == 1) {
         console.log("Name already in use.");
 
-        var html = `
-        <p>Name already in use.</p>
-        <a href="/signup">Try again</a>
-        `;
+        const errorMessage = "Name already in use.";
+        const authentication = false;
 
-        res.send(html);
+        res.render("signupSubmit", { errorMessage: errorMessage, authentication: authentication });
         return;
     } else if (emailResult.length == 1) {
         console.log("Email already in use.");
 
-        var html = `
-        <p>Email already in use.</p>
-        <a href="/signup">Try again</a>
-        `;
+        const errorMessage = "Email already in use.";
+        const authentication = false;
 
-        res.send(html);
+        res.render("signupSubmit", { errorMessage: errorMessage, authentication: authentication });
         return;
     } else {
         // Encrypt the password of the new account to store.
         var hashedPassword = await bcrypt.hash(password, saltRounds);
-
-        var html = `
-                <!DOCTYPE html>
-                <html>
-                  <head>
-                    <meta http-equiv="refresh" content="3;url=/members">
-                  </head>
-                  <body>
-                    <p>User created successfully. Redirecting to members page...</p>
-                  </body>
-                </html>
-              `;
 
         // Create a unique index with a case-insensitive collation on the name field
         await userCollection.createIndex(
@@ -138,11 +113,22 @@ router.post('/', async (req, res) => {
 
         console.log("Inserted user");
 
+        const successMessage = "User created successfully.";
+        const redirectMessage = "Redirecting to members page...";
+        const authentication = true;
+        const expireTime = 60 * 60 * 1000; //expires after 1 hour (minutes * seconds * millis)
+
+        // Redirect to members page after 3 seconds. (Moved into signupSubmit.ejs)
+        // setTimeout(() => {
+        //     window.location.href = '/members';
+        //   }, 3000);
+
         req.session.authenticated = true;
         req.session.name = name;
+        req.session.user_type = 'user';
         req.session.cookie.maxAge = expireTime;
 
-        res.send(html);
+        res.render("signupSubmit", { successMessage: successMessage, redirectMessage: redirectMessage, authentication: authentication });
     }
 });
 

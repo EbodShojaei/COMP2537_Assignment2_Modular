@@ -1,0 +1,23 @@
+<%- include("templates/header") %>
+    <div class="container px-5 mt-5">
+        <% if (authentication) { %>
+            <br>
+            <h3>
+                <%= successMessage %>
+                    <small class="text-muted">
+                        <%= redirectMessage %>
+                    </small>
+            </h3>
+            <script>
+                setTimeout(() => {
+                    window.location.href = '/members';
+                }, 3000);
+            </script>
+            <% } else { %>
+                <h3>
+                    <%= errorMessage %>
+                </h3>
+                <a href="/login">Try again</a>
+                <% } %>
+    </div>
+<%- include("templates/footer") %>
