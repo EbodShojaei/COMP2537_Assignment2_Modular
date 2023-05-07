@@ -1,5 +1,5 @@
-const express = require('express');
-const router = express.Router();
+// Load modules below.
+const { router } = require('../config/dependencies');
 
 router.get('/', (req, res) => {
     req.session.destroy();

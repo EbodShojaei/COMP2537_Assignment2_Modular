@@ -26,4 +26,4 @@ function adminAuthorization(req, res, next) {
     }
 }
 
-module.exports = adminAuthorization;
+module.exports = { isAdmin, adminAuthorization };

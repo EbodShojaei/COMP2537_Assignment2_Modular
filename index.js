@@ -4,12 +4,7 @@
 
 // Load modules below.
 require('dotenv').config();
-const express = require('express');
-const session = require('express-session');
-const MongoDBSession = require('connect-mongodb-session')(session);
-const bcrypt = require('bcrypt');
-const saltRounds = 12;
-const Joi = require('joi');
+const { express, session } = require('./config/dependencies');
 
 
 // Function declarations
@@ -18,9 +13,6 @@ const adminAuthorization = require('./public/js/adminAuthorization');
 
 // Encrypt the session ID via GUID.
 const node_session_secret = process.env.NODE_SESSION_SECRET;
-
-// Max session time set to expire after 1 hour in milliseconds (n = 3600000).
-const expireTime = 60 * 60 * 1000;
 
 // Port declaration below. Defaults to 3020 if system variable PORT not set.
 const port = process.env.PORT || 3020;
@@ -43,7 +35,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 // Declare database connections.
-const { sessionStore, userCollection, sessionCollection, connectDB } = require('./config/databaseConnection');
+var { sessionStore, connectDB } = require('./config/databaseConnection');
 
 // Once connectDB is resolved by connecting to the MongoDB databases, start the server.
 connectDB.then(() => {
@@ -61,23 +53,15 @@ app.use(session({
 }
 ));
 
+let userCollection = connectDB.userCollection;
+let sessionCollection = connectDB.sessionCollection;
 
 ////////////////////////////////
 ///// START ROUTES SECTION /////
 ////////////////////////////////
 
 // Declare modular route paths.
-const routes = require('./config/routes');
-
-const homeRoute = routes.homeRoute;
-const signupRoute = routes.signupRoute;
-const signupSubmitRoute = routes.signupSubmitRoute;
-const loginRoute = routes.loginRoute;
-const loginSubmitRoute = routes.loginSubmitRoute;
-const logoutRoute = routes.logoutRoute;
-const membersRoute = routes.membersRoute;
-const adminRoute = routes.adminRoute;
-const error404Route = routes.error404Route;
+const { adminRoute, homeRoute, membersRoute, loginRoute, loginSubmitRoute, logoutRoute, signupRoute, signupSubmitRoute, error404Route } = require('./config/routes');
 
 app.use('/', homeRoute);
 app.use('/signup', signupRoute);

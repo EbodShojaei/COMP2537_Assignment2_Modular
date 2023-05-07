@@ -7,8 +7,7 @@
 
 // Requires section
 require('dotenv').config();
-const session = require('express-session');
-const MongoDBSession = require('connect-mongodb-session')(session);
+const { MongoDBSession } = require('./dependencies');
 
 // secret information section
 const mongodb_host = process.env.MONGODB_HOST;

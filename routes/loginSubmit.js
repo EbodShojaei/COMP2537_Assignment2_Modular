@@ -1,8 +1,5 @@
-const express = require('express');
-const router = express.Router();
-const bcrypt = require('bcrypt');
-const Joi = require('joi');
-const { userCollection } = require('../config/databaseConnection');
+// Load modules below.
+const { bcrypt, Joi, router } = require('../config/dependencies');
 
 // @author greencodecomments
 // @see https://github.com/greencodecomments/COMP2537_Demo_Code_1/blob/main/index.js

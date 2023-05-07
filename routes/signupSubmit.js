@@ -1,8 +1,5 @@
-const express = require('express');
-const router = express.Router();
-const bcrypt = require('bcrypt');
-const saltRounds = 12;
-const Joi = require('joi');
+// Load modules below.
+const { bcrypt, saltRounds, Joi, router } = require('../config/dependencies');
 
 // @credit greencodecomments
 // @see https://github.com/greencodecomments/COMP2537_Demo_Code_1/blob/main/index.js

@@ -24,4 +24,4 @@ function sessionValidation(req,res,next) {
     }
 }
 
-module.exports = sessionValidation;
+module.exports = { isValidSession, sessionValidation };
