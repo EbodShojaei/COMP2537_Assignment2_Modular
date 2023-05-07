@@ -40,3 +40,12 @@
         </div>
     </div>
 <%- include("templates/footer") %>
+<script>
+    // Create a link element to tell the browser to prefetch the image.
+    const head = document.getElementsByTagName('head')[0];
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'image';
+    link.href = '/img/2-signup_image.jpg';
+    head.appendChild(link);
+</script>
