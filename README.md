@@ -2,10 +2,10 @@
 
 Part 2 of Node.js COMP 2537 web series, adding an authorization-gated admin webpage using MongoDB. The web app now features ejs integration and refactoring of routes using express.Router().
 
-##### Part Two:
-    > Video: **[Link](https://www.youtube.com/watch?v=28Dz8hnGeKA)**
+##### Part Two: 
+-  Video: **[Link](https://www.youtube.com/watch?v=28Dz8hnGeKA)**
 ##### Part One: **[Link](https://github.com/EbodShojaei/COMP2537_Assignment1)**
-    > Video: **[Link](https://www.youtube.com/watch?v=naQQbh4W8V8&t=0s)**
+-  Video: **[Link](https://www.youtube.com/watch?v=naQQbh4W8V8&t=0s)**
 
 <br>
 
