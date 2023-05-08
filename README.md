@@ -2,8 +2,12 @@
 
 Part 2 of Node.js COMP 2537 web series, adding an authorization-gated admin webpage using MongoDB. The web app now features ejs integration and refactoring of routes using express.Router().
 
-Part One: **[Link](https://github.com/EbodShojaei/COMP2537_Assignment1)**
+##### Part Two:
+    > Video: **[Link](https://www.youtube.com/watch?v=28Dz8hnGeKA)**
+##### Part One: **[Link](https://github.com/EbodShojaei/COMP2537_Assignment1)**
+    > Video: **[Link](https://www.youtube.com/watch?v=naQQbh4W8V8&t=0s)**
 
+<br>
 
 	 Author: Ebod Shojaei
 	 Version: 2.0
@@ -50,8 +54,10 @@ Part One: **[Link](https://github.com/EbodShojaei/COMP2537_Assignment1)**
 - **[COMP2537_Demo_Code_2](https://github.com/greencodecomments/COMP2537_Demo_Code_2/tree/main)** by greencodecomments
 	- Used for part 2 setup
 <br>
+
 - **[COMP2537_Demo_Code_1](https://github.com/greencodecomments/COMP2537_Demo_Code_1)** by greencodecomments
 	- Used for part 1 setup
 <br>
+
 - **[ChatGPT-4](https://chat.openai.com/)** by OpenAI
 	- Used for debugging
